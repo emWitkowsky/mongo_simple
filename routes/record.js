@@ -37,7 +37,7 @@ recordRoutes.route("/products").get(async function(req, res) {
 });
 
 // dodawanie nowego produktu ze sprawdzaniem, czy nazwa jest unikalna
-recordRoutes.route("/products").post(async function(req, response){
+recordRoutes.route("/products/add").post(async function(req, response){
   try {
     let db_connect = dbo.getDb();
 
@@ -118,11 +118,11 @@ recordRoutes.route("/products/:id").delete(async function (req, res) {
 
 // raport stanu magazynu - liczba produktów i ich łączna wartość (price * quantity), a także osobny stan
 // dla każdego produktu
-recordRoutes.route("/products/report").get(async function (req, res) {
+recordRoutes.route("/products/raport").get(async function (req, res) {
   try {
     let db_connect = dbo.getDb();
 
-    const report = await db_connect.collection("products").aggregate([
+    const raport = await db_connect.collection("products").aggregate([
       {
         $group: {
           _id: null,
@@ -148,7 +148,7 @@ recordRoutes.route("/products/report").get(async function (req, res) {
       },
     ]).toArray();
 
-    res.json(report);
+    res.json(raport);
   } catch (error) {
     console.error("Error generating report:", error);
     res.status(500).json({ error: "Internal Server Error" });
